@@ -15,12 +15,11 @@ describe("Issuer", function () {
   it("enroll", async() => {
     const tOwner = "ethereum";
     const tRepo = "go-ethereum";
-    const pageNum = 1;
-    const tx: ethers.ContractTransaction = await issuer.enroll(tOwner, tRepo, pageNum);
+    const tx: ethers.ContractTransaction = await issuer.enroll(tOwner, tRepo);
     // receipt
     const receipt: ethers.ContractReceipt = await tx.wait()
     // could instead contract.on('event', async (...args: any[]))=>{})
-    const enrollId: number = await issuer.callStatic.enroll(tOwner, tRepo, pageNum) -1;
+    const enrollId: number = await issuer.callStatic.enroll(tOwner, tRepo) -1;
     console.log(await issuer.getURL(enrollId));
   });
 
@@ -28,8 +27,7 @@ describe("Issuer", function () {
     const tOwner = "ethereum";
     const tRepo = "go-ethereum";
     const incorrectRepo = "cosmos-sdk";
-    const pageNum = 1;
-    const tx: ethers.ContractTransaction = await issuer.enroll(tOwner, tRepo, pageNum);
+    const tx: ethers.ContractTransaction = await issuer.enroll(tOwner, tRepo);
     await tx.wait();
     // 1
     console.log(await issuer.getRepoEnrollCount(tOwner, tRepo));
@@ -40,11 +38,10 @@ describe("Issuer", function () {
   it("get url token pairs", async() => {
     const tOwner = "ethereum";
     const tRepo = "go-ethereum";
-    const pageNum = 1;
-    const tx: ethers.ContractTransaction = await issuer.enroll(tOwner, tRepo, pageNum);
+    const tx: ethers.ContractTransaction = await issuer.enroll(tOwner, tRepo);
     await tx.wait();
 
-    //[ 'https://api.github.com/repos/', 'contributors?per_page=1&page=' ]
+    //[ 'https://api.github.com/repos/', 'contributors?' ]
     console.log(await issuer.getUrlTokenPair(BigNumber.from("0")));
 
     await issuer.updateUrlToken("https://dbadoy", ".dev");
