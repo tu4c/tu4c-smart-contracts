@@ -15,19 +15,21 @@ describe("Issuer", function () {
   it("enroll", async() => {
     const tOwner = "ethereum";
     const tRepo = "go-ethereum";
-    const tx: ethers.ContractTransaction = await issuer.enroll(tOwner, tRepo);
+    const subject= "0x0000000000000000000000000000000000000000";
+    const tx: ethers.ContractTransaction = await issuer.enroll(subject, tOwner, tRepo);
     // receipt
     const receipt: ethers.ContractReceipt = await tx.wait()
     // could instead contract.on('event', async (...args: any[]))=>{})
-    const enrollId: number = await issuer.callStatic.enroll(tOwner, tRepo) -1;
+    const enrollId: number = await issuer.callStatic.enroll(subject, tOwner, tRepo) -1;
     console.log(await issuer.getURL(enrollId));
   });
 
-  it("enrol count", async() => {
+  it("enroll count", async() => {
     const tOwner = "ethereum";
     const tRepo = "go-ethereum";
     const incorrectRepo = "cosmos-sdk";
-    const tx: ethers.ContractTransaction = await issuer.enroll(tOwner, tRepo);
+    const subject= "0x0000000000000000000000000000000000000000";
+    const tx: ethers.ContractTransaction = await issuer.enroll(subject, tOwner, tRepo);
     await tx.wait();
     // 1
     console.log(await issuer.getRepoEnrollCount(tOwner, tRepo));
@@ -38,7 +40,8 @@ describe("Issuer", function () {
   it("get url token pairs", async() => {
     const tOwner = "ethereum";
     const tRepo = "go-ethereum";
-    const tx: ethers.ContractTransaction = await issuer.enroll(tOwner, tRepo);
+    const subject= "0x0000000000000000000000000000000000000000";
+    const tx: ethers.ContractTransaction = await issuer.enroll(subject, tOwner, tRepo);
     await tx.wait();
 
     //[ 'https://api.github.com/repos/', 'contributors?' ]
